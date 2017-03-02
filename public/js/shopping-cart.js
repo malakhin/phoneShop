@@ -21,6 +21,6 @@ class ShoppingCart {
 	addItem(item) {
 		this._items.push(item);
 		this._render();
-	}
 
+	}
 }

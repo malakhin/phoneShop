@@ -165,13 +165,29 @@ class PhoneCatalogue {
 		this._el.addEventListener('click', this._onPhoneItemClick.bind(this));
 	}
 
+	on(eventName, handler) {
+	    this._el.addEventListener(eventName, handler);
+    }
+
+    off(eventName, handler) {
+        this._el.removeEventListener(eventName, handler);
+    }
+
+	_trigger(eventName, data) {
+        let myEvent = new CustomEvent(eventName, {
+            detail: data
+        });
+
+        this._el.dispatchEvent(myEvent);
+    }
+
 	_render() {
         let template = document.querySelector('#phone-catalogue-template').innerHTML;
 		let compiled = _.template(template);
 
-        this._el.innerHTML = compiled ({
+        this._el.innerHTML = compiled({
             phones: phonesFromServer
-        });
+        })
 	}
 
 	_onPhoneItemClick(event) {
@@ -183,6 +199,6 @@ class PhoneCatalogue {
 
         let selectedPhoneItem = phoneItemLink.closest('[data-element="phoneItem"]');
 
-		alert(selectedPhoneItem.dataset.phoneId);
+		this._trigger('phoneSelected', selectedPhoneItem.dataset.phoneId);
 	}
 }
